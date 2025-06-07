@@ -1,0 +1,74 @@
+import elementos.*
+import plagas.*
+
+const hogar1 = new Hogar(nivelDeMugre = 20, confort = 50)
+const hogar2 = new Hogar(nivelDeMugre = 30, confort = 50)
+const huerta1 = new Huerta(capacidadDeProduccion = 60)
+const mascota1 = new Mascota(nivelDeSalud = 300)
+const mascota2 = new Mascota(nivelDeSalud = 240)
+describe "Elementos"{
+    
+    test "Un hogar1 es considerado bueno"{
+    
+        assert.that(hogar1.esBueno())
+    }          
+    test "Un hogar2 es considerado malo"{
+        assert.notThat(hogar2.esBueno())    
+    }
+
+    test "huerta1 es considerada buena (su nivel por defecto es 40)"{
+        assert.that(huerta1.esBueno())
+    }
+
+    test "huerta1 cambia su nivel a 61, ya no se considera buena"{
+        huerta1.nivel(61)
+        assert.notThat(huerta1.esBueno())
+    }
+
+    test "mascota1 es buena"{
+        assert.that(mascota1.esBueno())
+    }
+    test "mascota2 no es buena"{
+        assert.notThat(mascota2.esBueno())
+    }
+}
+
+describe "Barrios"{
+    const barrio1 = new Barrio()
+    const barrio2 = new Barrio()
+    method initialize(){
+        barrio1.agregarElementos([hogar1, huerta1, mascota1, mascota2, hogar2])
+        barrio2.agregarElementos([hogar1, mascota2, hogar2])
+    }
+    test "barrio1 es considerado copado"{
+        assert.that(barrio1.esCopado())
+    }
+    test "barrio2 no es considerado copado"{
+        assert.notThat(barrio2.esCopado())
+    }
+}
+
+describe "Plagas"{
+    const cucarachas1 = new Cucarachas(poblacion = 20, pesoPromedio = 12)
+    const mosquitos1 = new Mosquitos(poblacion = 12)
+    const pulgas1 = new Pulga(poblacion = 15)
+    const garrapatas1 = new Garrapatas(poblacion = 8)
+    test "El daño de cucarachas1 es 10 y trasmite enfermedades"{
+        assert.equals(10, cucarachas1.nivelDeDanio())
+        assert.that(cucarachas1.trasmiteEnfermedades())
+    }
+
+    test "mosquitos1 trasmite enfermedades y causa daño 12"{
+        assert.that(mosquitos1.trasmiteEnfermedades())
+        assert.equals(12, mosquitos1.nivelDeDanio())
+    }
+
+    test "pulgas1 trasmite enfermedades y causa 30 de daño"{
+        assert.equals(30, pulgas1.nivelDeDanio())
+        assert.that(pulgas1.trasmiteEnfermedades())
+    }
+
+    test "garrapatas1 no trasmite enfermedades"{
+        assert.notThat(garrapatas1.trasmiteEnfermedades())
+    }
+}
